@@ -105,6 +105,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* Hide the page scrollbar (scrolling still works; the orange progress line at the top shows position) */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
 body {
   margin: 0;
   background: var(--bg);

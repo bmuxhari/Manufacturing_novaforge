@@ -168,6 +168,15 @@
 
 @media (max-width: 768px) {
   .touch-button { display: none; }
+  /* Phones: navbar, gears, heading, paragraph and both buttons all fit in the first screen */
+  .hero { padding: 84px 0 24px; }
+  .hero-grid { gap: 18px; }
+  /* Gear picture sized by screen height (same shape as the drawing, so it stays centred) */
+  .hero-visual { width: auto; max-width: 100%; height: clamp(150px, 26svh, 240px); aspect-ratio: 480 / 390; }
+  .hero-title { font-size: clamp(30px, 8.5vw, 36px); margin-bottom: calc(12px + 0.08em); }
+  .hero-subtitle { font-size: 15px; line-height: 1.6; margin-bottom: 22px; }
+  .hero-buttons { gap: 10px; }
+  .hero-buttons :global(.btn) { height: 46px; font-size: 15px; }
 }
 
 @media (max-width: 480px) {

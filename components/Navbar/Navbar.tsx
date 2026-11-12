@@ -17,13 +17,10 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeHref, setActiveHref] = useState("");
   const navRef = useRef<HTMLElement>(null);
-  const isMenuOpenRef = useRef(false);
 
   // Keep the body class in sync (it locks page scroll while the menu is open).
   useEffect(() => {
-    isMenuOpenRef.current = isMenuOpen;
     document.body.classList.toggle("menu-open", isMenuOpen);
-    if (isMenuOpen) navRef.current?.classList.remove(styles["navbar-hidden"]);
   }, [isMenuOpen]);
 
   // On load, match the phone browser bar colour to the saved theme.
@@ -54,15 +51,11 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Solid background after 40px; hide when scrolling down past 700px, show when scrolling up.
-  useFrameLoop(({ scrollY, scrollDelta, scrollChanged }) => {
+  // Navbar always stays on screen (sticky on all devices); it just gets a tighter look after 40px of scroll.
+  useFrameLoop(({ scrollY, scrollChanged }) => {
     const nav = navRef.current;
     if (!scrollChanged || !nav) return;
     nav.classList.toggle(styles["navbar-scrolled"], scrollY > 40);
-    if (!isMenuOpenRef.current) {
-      if (scrollY > 700 && scrollDelta > 0) nav.classList.add(styles["navbar-hidden"]);
-      else if (scrollDelta < 0 || scrollY <= 700) nav.classList.remove(styles["navbar-hidden"]);
-    }
   });
 
   const closeMenu = () => setIsMenuOpen(false);

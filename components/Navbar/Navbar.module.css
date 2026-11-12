@@ -4,7 +4,6 @@
   padding: 18px 0; transition: padding 0.5s var(--ease), transform 0.6s var(--ease);
 }
 .navbar-scrolled { padding: 10px 0; }
-.navbar-hidden { transform: translateY(-100%); }
 .navbar-card {
   /* 1fr auto 1fr keeps the links exactly centered whatever the logo/button widths */
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
