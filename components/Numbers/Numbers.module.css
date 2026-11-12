@@ -1,0 +1,14 @@
+.numbers { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+.numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.number-item { padding: clamp(40px, 5vw, 70px) 28px; }
+.number-item + .number-item { border-left: 1px solid var(--line); }
+.number-item b { display: block; font-family: var(--font-heading); font-weight: 700; font-size: clamp(30px, 3vw, 48px); letter-spacing: -0.01em; line-height: 1; margin-bottom: 14px; font-variant-numeric: tabular-nums; }
+.number-item b small { font-size: 0.5em; color: var(--accent); margin-left: 4px; letter-spacing: 0; }
+.number-item > span { color: var(--muted); font-size: 14px; }
+
+@media (max-width: 768px) {
+  .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+  .number-item { padding: 36px 16px; }
+  .number-item:nth-child(3) { border-left: 0; }
+  .number-item:nth-child(n+3) { border-top: 1px solid var(--line); }
+}

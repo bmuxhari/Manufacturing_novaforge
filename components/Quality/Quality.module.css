@@ -1,0 +1,38 @@
+.quality { padding: clamp(80px, 10vw, 140px) 0; position: relative; }
+.quality::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; opacity: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 50%, #000, transparent 65%); mask-image: radial-gradient(ellipse at 70% 50%, #000, transparent 65%);
+}
+.quality-grid { position: relative; display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(40px, 6vw, 100px); align-items: center; }
+.quality :global(.section-lead) { margin-top: 24px; }
+.quality-certifications { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+.quality-certifications li {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px;
+  border: 1px solid var(--line-2); background: var(--glass); font-size: 13px; font-weight: 500;
+  transition: border-color 0.3s, transform 0.4s var(--ease);
+}
+.quality-certifications li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.quality-certifications li:hover { border-color: var(--accent); transform: translateY(-3px); }
+.quality-rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.quality-ring { position: relative; aspect-ratio: 1; padding: 14px; border-radius: 50%; }
+.quality-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.quality-ring circle { fill: none; stroke-width: 3; }
+.quality-ring-track { stroke: var(--line-2); }
+.quality-ring-progress { stroke: var(--accent); stroke-linecap: round; filter: drop-shadow(0 0 6px var(--accent)); transition: stroke-dashoffset 2.2s var(--ease) 0.2s; }
+/* Ring starts empty (circumference = 2π × 54 ≈ 339.29); GlobalEffects fills it on reveal. */
+:global(.js) .quality-ring-progress { stroke-dasharray: 339.29; stroke-dashoffset: 339.29; }
+.quality-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.quality-ring-label b { font-family: var(--font-heading); font-weight: 700; font-size: clamp(22px, 2.4vw, 34px); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.quality-ring-label > span { font-size: 12px; color: var(--muted); max-width: 12ch; line-height: 1.3; }
+
+@media (max-width: 1024px) {
+  .quality-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .quality-rings { gap: 10px; }
+  .quality-ring { padding: 4px; }
+  .quality-ring-label > span { font-size: 10.5px; }
+}

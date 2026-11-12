@@ -1,0 +1,175 @@
+.hero {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 140px 0 48px; overflow: hidden;
+}
+.hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.hero-glow {
+  position: absolute; z-index: 0; width: 900px; height: 900px; right: -200px; top: -200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.16), transparent 60%);
+  filter: blur(40px); animation: hero-glow-breathe 8s ease-in-out infinite;
+}
+@keyframes hero-glow-breathe { 50% { transform: scale(1.15) translate(-40px, 40px); opacity: 0.7; } }
+.hero::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 200px; z-index: 0;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+}
+.hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }
+/* Line the hero up with the navbar: text starts under the logo, gears end under the "Request a Quote" button. */
+.hero-grid { padding-left: calc(var(--gutter) + var(--navbar-inset-left)); padding-right: calc(var(--gutter) + var(--navbar-inset-right)); }
+/* Text sits above the gears (and above the X-ray lens) */
+.hero-content { position: relative; z-index: 1; will-change: transform; }
+
+
+/* Heading: Ubuntu Bold — sizes measured from the Chiranvi reference (≈60px, line-height 1.2 at 1920px) */
+.hero-title {
+  font-family: var(--font-heading); font-size: clamp(36px, 3.1vw, 60px); line-height: 1.2;
+  letter-spacing: 0; font-weight: 700; color: var(--text); margin-bottom: calc(16px + 0.08em); /* +0.08em cancels the line wrapper's negative margin */
+}
+.hero-title-line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.hero-title-word { display: inline-block; }
+.hero-title :global(.accent) {
+  background: linear-gradient(100deg, var(--accent) 20%, var(--accent-2) 50%, var(--accent) 80%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: hero-title-shine 6s linear infinite; padding-right: 0.06em;
+}
+@keyframes hero-title-shine { to { background-position: -200% 0; } }
+/* Paragraph + buttons: Poppins — reference: ≈19px, line-height 1.7, 40px gap to the button */
+.hero-subtitle {
+  font-family: var(--font-body); font-weight: 400; color: rgba(var(--ink-rgb), 0.86);
+  font-size: clamp(16px, 1vw, 19px); line-height: 1.7; max-width: 540px; margin-bottom: 52px;
+}
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero-buttons :global(.btn) {
+  font-family: var(--font-body); font-weight: 600; letter-spacing: 0;
+  /* Medium buttons */
+  height: clamp(50px, 3vw, 58px); padding: 0 clamp(24px, 1.7vw, 32px); font-size: clamp(15px, 0.9vw, 17px);
+  /* Smooth colour change only, no movement on hover */
+  transition: color 0.5s ease-in-out, border-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+/* ---------- Gears visual ---------- */
+.hero-visual { position: relative; aspect-ratio: 1.2; will-change: transform; }
+.hero-visual-inner { position: absolute; inset: 0; }
+/* Shadows are now per gear (SVG filters in HeroGears.tsx), so the whole-SVG shadow is removed. */
+.gears-svg { width: 100%; height: 100%; overflow: visible; }
+.gears-decoration circle, .gears-decoration line { fill: none; stroke: rgba(var(--ink-rgb), 0.09); stroke-width: 1; }
+.gears-decoration .gears-decoration-dashed-ring { stroke-dasharray: 2 8; stroke: rgba(var(--accent-rgb), 0.45); animation: gears-spin 60s linear infinite; transform-origin: 250px 300px; }
+@keyframes gears-spin { to { transform: rotate(360deg); } }
+.gear-body { stroke-width: 1.6; stroke-linejoin: round; }
+.gear-line { fill: none; stroke-width: 1; }
+.gear-hole { fill: var(--bg); stroke-width: 1; }
+.gear-sparks { pointer-events: none; }
+.flame-shockwave { fill: none; stroke: var(--accent); stroke-width: 2.5; }/* Lightning canvas for the "Do not touch" effect: covers the hero, above everything, never blocks clicks */.hero-lightning { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
+/* ---------- X-ray lens (see HeroGears.tsx + HeroXrayLayer.tsx) ---------- */
+.hero.hero-lens-active { cursor: none; }
+.xray-panel { fill: var(--bg-2); }
+.xray-grid-line { fill: none; stroke: var(--accent); stroke-width: 0.5; opacity: 0.18; }
+.xray-hatch-line { stroke: var(--accent); stroke-width: 1; opacity: 0.45; }
+.xray-line { fill: none; stroke: var(--accent); stroke-width: 1; }
+.xray-line-faint { fill: none; stroke: var(--accent); stroke-width: 0.8; opacity: 0.45; }
+.xray-curve { fill: none; stroke: var(--accent); stroke-width: 1.8; }
+.xray-outline-dashed { fill: none; stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.xray-pitch-circle { fill: none; stroke: var(--accent); stroke-width: 0.8; stroke-dasharray: 10 3 2 3; opacity: 0.7; }
+.xray-hatched { fill: url(#xrayHatchPattern); stroke: var(--accent); stroke-width: 1; }
+.xray-cutout { fill: var(--bg-2); stroke: var(--accent); stroke-width: 1; }
+.xray-ball { fill: rgba(var(--accent-rgb), 0.25); stroke: var(--accent); stroke-width: 0.9; }
+.xray-shaft { fill: rgba(var(--accent-rgb), 0.3); stroke: var(--accent); stroke-width: 1; }
+.xray-label-dot { fill: var(--accent); }
+.xray-label { fill: var(--accent-text); font-family: var(--font-body); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; }
+.xray-label-detail { fill: var(--muted); font-family: var(--font-body); font-size: 8.5px; letter-spacing: 0.08em; }
+.lens-ring { pointer-events: none; }
+.lens-ring-circle { fill: none; stroke: var(--accent); stroke-width: 1.2; }
+.lens-ring-dot { fill: var(--accent); }
+.lens-ring-tag { fill: var(--text); font-family: var(--font-body); font-size: 9px; font-weight: 600; letter-spacing: 0.16em; }
+
+
+
+/* ---------- "Do not touch" button: glowing electric-blue oval (see HeroTouchButton.tsx) ---------- */
+.touch-button {
+  position: absolute; z-index: 3; left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
+}
+.touch-button:focus-visible { outline: none; }
+.touch-oval-area { position: relative; display: grid; place-items: center; width: 84px; height: 72px; }
+
+/* The capsule: dark glass inside, glowing electric rim */
+.touch-oval {
+  position: relative; z-index: 1; display: grid; place-items: center; width: 30px; height: 46px; border-radius: 999px;
+  background: radial-gradient(120% 80% at 50% 30%, rgba(var(--electric-rgb), 0.28), rgba(10, 18, 30, 0.92) 70%);
+  border: 1.5px solid rgba(var(--electric-rgb), 0.9);
+  box-shadow:
+    0 0 0 3px rgba(var(--electric-rgb), 0.12),
+    0 0 18px rgba(var(--electric-rgb), 0.55),
+    inset 0 0 14px rgba(var(--electric-rgb), 0.45);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s ease;
+  animation: touch-oval-breathe 2.6s ease-in-out infinite;
+}
+@keyframes touch-oval-breathe {
+  50% { box-shadow: 0 0 0 4px rgba(var(--electric-rgb), 0.18), 0 0 28px rgba(var(--electric-rgb), 0.75), inset 0 0 18px rgba(var(--electric-rgb), 0.6); }
+}
+.touch-bolt {
+  width: 15px; height: 15px; color: #e9f8ff;
+  filter: drop-shadow(0 0 4px rgb(var(--electric-rgb))) drop-shadow(0 0 10px rgba(var(--electric-rgb), 0.8));
+  animation: touch-bolt-flicker 3.2s steps(1) infinite;
+}
+@keyframes touch-bolt-flicker {
+  0%, 100% { opacity: 1; } 61% { opacity: 0.25; } 63% { opacity: 1; } 66% { opacity: 0.4; } 68% { opacity: 1; } 88% { opacity: 0.6; } 89% { opacity: 1; }
+}
+
+/* Pulse rings rippling out from the oval */
+.touch-pulse-ring {
+  position: absolute; left: 50%; top: 50%; width: 30px; height: 46px; margin: -23px 0 0 -15px; border-radius: 999px;
+  border: 1.5px solid rgba(var(--electric-rgb), 0.7); opacity: 0; pointer-events: none;
+  animation: touch-pulse 2.6s ease-out infinite;
+}
+.touch-pulse-ring-late { animation-delay: 1.3s; }
+@keyframes touch-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+/* Electric arcs (shown while hovered/focused, shapes re-drawn by JS) */
+.touch-arcs {
+  position: absolute; inset: -12px; width: calc(100% + 24px); height: calc(100% + 24px); pointer-events: none; overflow: visible;
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.touch-arcs path {
+  fill: none; stroke: #e9f8ff; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgb(var(--electric-rgb))) drop-shadow(0 0 8px rgba(var(--electric-rgb), 0.9));
+}
+
+.touch-label {
+  font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--electric); text-shadow: 0 0 10px rgba(var(--electric-rgb), 0.45); white-space: nowrap; padding-left: 0.28em;
+}
+
+/* Hover / keyboard focus: charged */
+.touch-button-charged .touch-oval { transform: scale(1.08); box-shadow: 0 0 0 5px rgba(var(--electric-rgb), 0.22), 0 0 36px rgba(var(--electric-rgb), 0.95), inset 0 0 20px rgba(var(--electric-rgb), 0.7); animation: none; }
+.touch-button-charged .touch-arcs { opacity: 1; }
+.touch-button-charged .touch-pulse-ring { animation-duration: 1.2s; }
+.touch-button-charged .touch-pulse-ring-late { animation-delay: 0.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .touch-oval, .touch-bolt, .touch-pulse-ring { animation: none; }
+}
+
+/* ---------- Entrance (starts when the preloader finishes and body gets .is-ready) ---------- */
+:global(.js) .hero-title-word { transform: translateY(115%) rotate(4deg); transform-origin: left bottom; }
+:global(.js) .hero-entrance { opacity: 0; transform: translateY(30px); }
+:global(.js) :global(body.is-ready) .hero-title-word { transform: none; transition: transform 1.3s var(--ease); transition-delay: calc(var(--word-index) * 90ms + 150ms); }
+:global(.js) :global(body.is-ready) .hero-entrance { opacity: 1; transform: none; transition: opacity 1.2s var(--ease), transform 1.2s var(--ease); transition-delay: calc(var(--entrance-step) * 80ms + 200ms); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { max-width: 560px; width: 100%; margin: 0 auto; order: -1; aspect-ratio: 1.35; }
+  .hero { padding-top: 110px; }
+}
+
+@media (max-width: 768px) {
+  .touch-button { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-buttons :global(.btn) { width: 100%; }
+}

@@ -1,0 +1,71 @@
+.industries { padding: clamp(80px, 10vw, 140px) 0; }
+.industry-panels { display: flex; gap: 12px; height: 540px; }
+
+/* Panel widening: a soft ease-in-out so it starts and ends gently */
+.industry-panel {
+  --hue: 22;
+  --panel-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative; flex: 1; min-width: 0; padding: 28px; border-radius: var(--radius); overflow: hidden; cursor: pointer;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 80% at 100% 0%, hsla(var(--hue), 90%, 55%, 0.14), transparent 60%),
+    linear-gradient(180deg, var(--surface), var(--bg-2));
+  transition: flex 0.8s var(--panel-ease), border-color 0.6s ease;
+  display: flex; flex-direction: column;
+}
+.industry-panel-active { flex: 4.2; border-color: hsla(var(--hue), 90%, 60%, 0.35); cursor: default; }
+
+.industry-panel-background-icon {
+  position: absolute; right: -10%; bottom: -14%; width: 75%;
+  color: hsla(var(--hue), 80%, var(--industry-icon-lightness), 0.18);
+  opacity: 0; transform: scale(0.85) rotate(-6deg);
+  transition: transform 0.9s var(--panel-ease), opacity 0.6s ease;
+}
+.industry-panel-active .industry-panel-background-icon { opacity: 1; transform: none; transition-delay: 0.15s; }
+.industry-panel-number { font-family: var(--mono); font-size: 12px; color: hsl(var(--hue), 75%, var(--industry-number-lightness)); }
+
+/* Collapsed state: vertical label at the bottom-left */
+.industry-panel-vertical-label {
+  position: absolute; left: 28px; bottom: 28px;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-family: var(--font-heading); font-size: 20px; font-weight: 500; color: var(--muted); white-space: nowrap;
+  transition: opacity 0.35s ease 0.25s, transform 0.5s var(--panel-ease) 0.25s;
+}
+.industry-panel-active .industry-panel-vertical-label { opacity: 0; transform: rotate(180deg) translateY(-24px); transition-delay: 0s; transition-duration: 0.25s; }
+
+/* Open state: title + text. Fixed width so the text never re-wraps while the panel widens;
+   it fades up after the panel has opened, and fades out quickly when closing. */
+.industry-panel-content {
+  position: absolute; left: 28px; bottom: 28px; width: clamp(260px, 32vw, 470px);
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.2s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.industry-panel-active .industry-panel-content {
+  opacity: 1; transform: none; pointer-events: auto;
+  transition: opacity 0.55s ease 0.35s, transform 0.7s var(--panel-ease) 0.3s;
+}
+.industry-panel-title { font-size: clamp(22px, 2.2vw, 32px); font-weight: 500; letter-spacing: -0.01em; }
+.industry-panel-body p { color: var(--muted); max-width: 46ch; margin: 14px 0 20px; }
+.industry-panel-body ul { display: flex; flex-wrap: wrap; gap: 8px; }
+.industry-panel-body li { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line-2); }
+
+@media (max-width: 1024px) {
+  .industry-panels { height: 480px; }
+}
+
+/* Phones: panels stack; title always visible, details slide open under it */
+@media (max-width: 768px) {
+  .industry-panels { flex-direction: column; height: auto; }
+  .industry-panel, .industry-panel.industry-panel-active { flex: none; min-height: 84px; }
+  .industry-panel.industry-panel-active { min-height: 300px; }
+  .industry-panel-vertical-label { display: none; }
+  .industry-panel-content, .industry-panel-active .industry-panel-content {
+    position: static; width: auto; margin-top: 8px; opacity: 1; transform: none; pointer-events: auto;
+  }
+  .industry-panel-active .industry-panel-content { margin-top: auto; }
+  .industry-panel-title { font-size: 20px; }
+  .industry-panel:not(.industry-panel-active) .industry-panel-title { color: var(--muted); }
+  .industry-panel-body { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.6s var(--panel-ease), opacity 0.3s ease; }
+  .industry-panel-active .industry-panel-body { max-height: 260px; opacity: 1; transition: max-height 0.7s var(--panel-ease), opacity 0.5s ease 0.2s; }
+}

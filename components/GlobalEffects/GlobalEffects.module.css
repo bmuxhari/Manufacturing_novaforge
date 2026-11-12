@@ -1,0 +1,38 @@
+/* ---------- Cursor ---------- */
+.cursor { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: none; }
+.cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; border-radius: 50%; will-change: transform; }
+.cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--accent); }
+.cursor-ring {
+  width: 40px; height: 40px; margin: -20px 0 0 -20px; border: 1px solid rgba(var(--ink-rgb), 0.35);
+  transition: width 0.4s var(--ease), height 0.4s var(--ease), margin 0.4s var(--ease), background 0.3s, border-color 0.3s;
+}
+.cursor-hovering .cursor-ring { width: 72px; height: 72px; margin: -36px 0 0 -36px; background: rgba(var(--accent-rgb), 0.1); border-color: var(--accent); }
+.cursor-pressed .cursor-ring { width: 28px; height: 28px; margin: -14px 0 0 -14px; }
+@media (hover: hover) and (pointer: fine) {
+  :global(.js) .cursor { display: block; }
+}
+
+/* ---------- Grain & progress ---------- */
+.film-grain {
+  position: fixed; inset: -50%; z-index: 998; pointer-events: none; opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: film-grain-shift 1s steps(6) infinite;
+}
+@keyframes film-grain-shift {
+  0%,100% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-4%); }
+  60% { transform: translate(-4%,-2%); } 80% { transform: translate(3%,3%); }
+}
+.scroll-progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 101;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left; transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-grain { display: none; }
+}
+
+/* While the hero X-ray lens is showing, the lens itself is the cursor */
+:global(body.hero-lens-active) .cursor { visibility: hidden; }
+/* Outside the hero the custom cursor is hidden and the normal mouse cursor is used */
+.cursor-outside-hero { visibility: hidden; }

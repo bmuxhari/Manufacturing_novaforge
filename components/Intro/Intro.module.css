@@ -1,0 +1,33 @@
+.intro { padding: clamp(100px, 14vw, 200px) 0 clamp(80px, 10vw, 140px); }
+/* Two columns: text on the left, biplane sketch on the right, centred on each other */
+.intro-columns { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 100px); align-items: center; }
+.intro-text-column { min-width: 0; }
+.intro-heading { margin-bottom: 20px; } /* size comes from the shared .h2 rule */
+.intro-image-column { display: flex; justify-content: center; align-self: center; }
+/* public/images/about-blueprint-mask.png is a transparent stencil of the biplane sketch (1092 × 727)
+   with soft faded edges. The colour comes from --accent: orange on cream, brighter orange in dark mode.
+   Fills the column width; height capped so it fits on screen next to the text. */
+.intro-blueprint-image {
+  width: 100%; aspect-ratio: 1092 / 727; max-height: min(520px, 64vh);
+  background-color: var(--accent);
+  -webkit-mask: url("/images/about-blueprint-mask.png") center / contain no-repeat;
+  mask: url("/images/about-blueprint-mask.png") center / contain no-repeat;
+}
+.intro-statement { font-size: clamp(18px, 1.5vw, 24px); line-height: 1.5; letter-spacing: -0.01em; font-weight: 500; }
+.intro-statement em { font-family: var(--serif); font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+:global(.js) .intro-statement-word { opacity: 0.14; transition: opacity 0.35s, color 0.35s; }
+:global(.js) .intro-statement-word.intro-statement-word-lit { opacity: 1; }
+:global(.js) em.intro-statement-word.intro-statement-word-lit { color: var(--accent); }
+.intro-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: clamp(60px, 8vw, 110px); }
+.intro-facts > div { padding-top: 22px; border-top: 1px solid var(--line-2); }
+.intro-facts p { margin-top: 10px; color: var(--muted); max-width: 32ch; }
+
+@media (max-width: 1024px) {
+  /* Stack the columns: text first, blueprint below */
+  .intro-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .intro-facts { grid-template-columns: 1fr; gap: 0; }
+  .intro-facts > div { padding: 22px 0; }
+}
